@@ -17,15 +17,17 @@ int main()
 	test4();
 	test5();
 	test6();*/
-	queue<int> Q;
+	{queue<int> Q;
 	Q.push(5);
+	//std::cout << Q.front() << std::endl;
 	Q.push(10);
-	int a = Q.front();
-	int b = Q.back();
-	std::cout << Q.front() << std::endl;
+	Q.push(11);
+	}
+	/*std::cout << Q.front() << std::endl;
 	Q.pop();
-	std::cout << Q.front() << std::endl;
-	std::cout << b << std::endl;
+	std::cout << Q.back() << std::endl;
+	std::cout << Q.front() << std::endl;*/
+//	std::cout << b << std::endl;*/
 	system("pause");
 	return 0;
 }

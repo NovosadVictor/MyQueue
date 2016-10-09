@@ -7,7 +7,7 @@ template<typename T>
 class queue
 {
 public:
-	queue() : _first(nullptr), _last(nullptr), _size(0) {}
+	queue() : _first(new list<T>), _last(_first), _size(0) {}
 	queue(const queue<T> &other);
 	~queue();
 	T& front();
@@ -29,21 +29,26 @@ private:
 template<typename T>
 queue<T>::queue(const queue<T> &other)
 {
-	_size = other._size;
-	//_first->_prev = nullptr;
 	_first = other._first;
-	//_last->_next = nullptr;
 	_last = other._last;
+	_size = other._size;
 }
 template<typename T>
 queue<T>::~queue()
 {
+	
 	while (_first != _last)
 	{
-		delete _first;
-		_first = _first->_next;
+		list<T> *FIRST = _first;
+		std::cout << FIRST->_x << std::endl;
+		delete FIRST;
+		std::cout << FIRST->_x << std::endl;
+		FIRST = _first->_next;
+		std::cout << FIRST->_x << std::endl;
 	}
+	std::cout << _first->_x << std::endl;
 	delete _first;
+	std::cout << _first->_x << std::endl;
 	delete _last;
 }
 template<typename T>
@@ -73,20 +78,20 @@ size_t queue<T>::size()
 template<typename T>
 void queue<T>::push(const T& element)
 {
-	if (_size != 0)
+	
+	if (_size)
 	{
-		list<T> Q;
-		Q._x = element;
-		Q._prev = _last;
-		_last = &Q;
+		list<T> *Q = new list<T>;
+		Q->_x = element;
+		Q->_prev = _last;
+		_last->_next = Q;
+		_last = _last->_next;
 	}
 	else
 	{
-		list<T> L;
-		L._x = element;
-		L._prev = nullptr;
-		L._next = nullptr;
-		_first = _last = &L;
+		list<T> *L = new list<T>;
+		L->_x = element;
+		_first = _last = L;
 	}
 	++_size;
 }
@@ -95,13 +100,13 @@ void queue<T>::pop()
 {
 	if (_size == 1)
 	{
-		_last = _first = nullptr;
 		delete _last;
 		delete _first;
+		_last = _first = nullptr;
 	}
 	if (_size > 1)
 	{
-		list<T> *FIRST;
+     	list<T> *FIRST;
 		FIRST = _first->_next;
 		delete _first;
 		_first = FIRST;
