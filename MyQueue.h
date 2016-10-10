@@ -16,10 +16,10 @@ public:
 	size_t size();
 	void push(const T& element);
 	void pop();
-//	bool operator==(const queue<T>& other);
-//	bool operator!=(const queue<T>& other);
-//	queue& operator=(const queue<T>& other);
-//	friend std::ostream& operator<<(std::ostream& os, const queue& _queue);
+	bool operator==(const queue<T>& other);
+	bool operator!=(const queue<T>& other);
+	queue<T>& operator=(const queue<T>& other);
+	friend std::ostream& operator<<(std::ostream& os, const queue<T>& _queue);
 private:
 	list<T> *_first;
 	list<T> *_last;
@@ -40,15 +40,11 @@ queue<T>::~queue()
 	while (_first != _last)
 	{
 		list<T> *FIRST = _first;
-		std::cout << FIRST->_x << std::endl;
 		delete FIRST;
-		std::cout << FIRST->_x << std::endl;
 		FIRST = _first->_next;
-		std::cout << FIRST->_x << std::endl;
+		_first = FIRST;
 	}
-	std::cout << _first->_x << std::endl;
 	delete _first;
-	std::cout << _first->_x << std::endl;
 	delete _last;
 }
 template<typename T>
@@ -114,6 +110,50 @@ void queue<T>::pop()
 	}
 	if (_size <= 0)
 		throw std::bad_alloc();
+}
+template<typename T>
+bool queue<T>::operator==(const queue<T> &other)
+{
+	if (_len != other._len)
+		return false;
+	list<T> *FIRST = _first;
+	list<T> *OTHERFIRST = other._first;
+	while (FIRST != _last)
+	{
+		if (FIRST->_x != OTHERFIRST->_x)
+			return false;
+		FIRST = _first->_next;
+		OTHERFIRST = other._first->_next;
+	}
+	return true;
+}
+template<typename T>
+bool queue<T>::operator!=(const queue<T> &other)
+{
+	return !((*this) == other);
+}
+template<typename T>
+queue<T>& queue<T>::operator=(const queue<T>& other)
+{
+	_first = other._first;
+	_last = other._last;
+	_size = other._size;
+	return *this;
+}
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const queue<T>& _queue)
+{
+	list<T> *FIRST = _queue._first;
+    list<T> *_FIRST = FIRST;
+	while (FIRST != _queue._last)
+	{
+		os << FIRST->_x << std::endl;
+		FIRST = _queue._first->_next;
+		_queue._first = FIRST;
+	}
+	os << queue._last->_x << std::endl;
+	_queue._first = _FIRST;
+	return os;
 }
 
 
