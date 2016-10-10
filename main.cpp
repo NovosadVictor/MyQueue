@@ -18,14 +18,27 @@ int main()
 	test5();
 	test6();*/
 	queue<int> Q;
+	queue<int> QQ;
 	Q.push(5);
 	Q.push(10);
 	Q.push(11);
-	std::cout << Q.front() << std::endl;
-	Q.pop();
-	std::cout << Q.back() << std::endl;
-	std::cout << Q.front() << std::endl;
+	Q.push(13);
+	Q.push(14);
+	QQ = Q;
+	std::cout << "here : " << std::endl;
 	std::cout << Q << std::endl;
+	std::cout << "here : " << std::endl;
+	std::cout << QQ << std::endl;
+	std::cout << QQ.size() << " " << Q.size() << std::endl;
+	if (Q == QQ)
+	    std::cout << "true " << std::endl;
+	queue<int> QQQ;
+	queue<int> QQQQ;
+	QQQ.push(1);
+	QQQ.push(2);
+	QQQ.push(4);
+	QQQQ = Q + QQQ;
+	std::cout << QQQQ << std::endl;
 	system("pause");
 	return 0;
 }

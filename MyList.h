@@ -2,7 +2,7 @@
 #define _MYLIST_H_
 
 template<typename T>
-struct list
+struct listNode
 {
 	list<T> *_prev;
 	T _x;
