@@ -60,7 +60,10 @@ int main()
 	std::cout << QQ << std::endl;*/
 	queue<int> Q;
 	for (int i = 0; i < 8; ++i)
-		Q.push(i * 3 - 2);
+		Q.push(i * 4 +12);
+	Q.push(4);
+	Q.push(17);
+	Q.push(-3);
 	std::cout << "here Q" << std::endl;
 	std::cout << Q << std::endl;
 	queue<int> QQ = Q;
@@ -75,7 +78,7 @@ int main()
 		std::cout << "true" << std::endl;
 	std::cout << "here Q size" << std::endl;
 	std::cout << Q.size() << std::endl;
-	queue<int> QQQ = Q + QQ;
+	queue<int> QQQ(Q + QQ);
 	std::cout << "Q + QQ here" << std::endl;
 	std::cout << QQQ << std::endl;
 	std::cout << "Q here" << std::endl;

@@ -7,13 +7,14 @@ template<typename T>
 class queue
 {
 public:
-	queue() : _first(0), _last(0), _size(0) {}
+	queue() : _first(0), _last(_first), _size(0) {}
 	queue(const queue<T> &other);
 	~queue();
 	T& front();
 	T& back();
 	bool empty();
 	size_t size();
+	void clear();
 	void push(const T& element);
 	void pop();
 	friend queue<T> operator+(const queue<T> &lhs, const queue<T> &rhs) {
@@ -31,15 +32,17 @@ public:
 	bool operator!=(const queue<T>& other);
 	queue<T>& operator=(const queue<T>& other);
 	friend std::ostream& operator<<(std::ostream& os,const queue<T> &_queue){           
-		list<T> *_FIRST = _queue._first;
-		list<T> *FIRST = _queue._first;
-        	while (_FIRST != _queue._last)
-        	{
-                	os << _FIRST->_x << std::endl;
-               		_FIRST = _FIRST->_next;
-       		}
-       		os << _queue._last->_x << std::endl;
-        	return os;
+  		if (_queue._size > 0) {
+			list<T> *_FIRST = _queue._first;
+			list<T> *FIRST = _queue._first;
+        		while (_FIRST != 0) {
+                		os << _FIRST->_x << std::endl;
+               			_FIRST = _FIRST->_next;
+       			}
+		}
+		else
+			throw 3;
+        	return os;	
 	}
 	void QueueSort();
 		
@@ -50,12 +53,35 @@ private:
 };
 
 template<typename T>
-queue<T>::queue(const queue<T> &other)
-{
-	_first = other._first;
-	_last = other._last;
-	_size = other._size;
+queue<T>::queue(const queue<T> &other) {
+  	if (other._size > 0) {
+		list<T> *L = new list<T>;
+        	L->_x = other._first->_x;
+        	_first = _last = L;
+        	L = 0;
+		++_size;
+        	delete L;
+		if (other._size > 1) {
+			list<T> *FIRST = other._first->_next;
+			while (FIRST != 0) {
+                		list<T> *Q = new list<T>;
+               			Q->_x = FIRST->_x;
+               			_last->_next = Q;
+                		_last = Q;
+               			Q = 0;
+                		delete Q;
+				++_size;
+				FIRST = FIRST->_next;
+			}
+		}
+	}
 }
+/*list<T> *FIRST = other._first;
+        while (FIRST != 0){
+                (*this).push(FIRST->_x);
+                FIRST = FIRST->_next;
+        }*/
+
 template<typename T>
 queue<T>::~queue() {
 	for(list<T> *cur = _first; cur != 0; cur = cur->_next)
@@ -67,6 +93,16 @@ T& queue<T>::front()
 	if (_size != 0)
 		return _first->_x;
 	throw std::bad_alloc();
+}
+template<typename T>
+void queue<T>::clear() {
+	if (_size > 0){
+		for(list<T> *cur = _first; cur != 0; cur = cur->_next)
+        	        delete cur;
+	_size = 0;
+	_first = 0;
+	_last = _first;
+	}
 }
 template<typename T>
 T& queue<T>::back()
@@ -151,11 +187,13 @@ bool queue<T>::operator!=(const queue<T> &other)
 	return !((*this) == other);
 }
 template<typename T>
-queue<T>& queue<T>::operator=(const queue<T>& other)
-{
-	_first = other._first;
-	_last = other._last;
-	_size = other._size;
+queue<T>& queue<T>::operator=(const queue<T>& other) {
+	list<T> *FIRST = other._first;
+	(*this).clear();
+	while (FIRST != 0){
+		(*this).push(FIRST->_x);
+		FIRST = FIRST->_next;
+	}
 	return *this;
 }
 template<typename T>
