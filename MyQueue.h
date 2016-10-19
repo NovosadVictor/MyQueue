@@ -84,7 +84,7 @@ queue<T>::queue(const queue<T> &other) {
 
 template<typename T>
 queue<T>::~queue() {
-	for(list<T> *cur = _first; cur != 0; cur = cur->_next)
+	for(list<T> *cur = _first; cur != NULL; cur = cur->_next)
 		delete cur;
 }
 template<typename T>
@@ -97,10 +97,10 @@ T& queue<T>::front()
 template<typename T>
 void queue<T>::clear() {
 	if (_size > 0){
-		for(list<T> *cur = _first; cur != 0; cur = cur->_next)
+		for(list<T> *cur = _first; cur != NULL; cur = cur->_next)
         	        delete cur;
 	_size = 0;
-	_first = 0;
+	_first = NULL;
 	_last = _first;
 	}
 }
