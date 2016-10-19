@@ -6,7 +6,7 @@ struct list
 {
 	T _x;
 	list<T> *_next;
-	list() : _next(0){}
+	list() : _next(NULL){}
 };
 
 #endif

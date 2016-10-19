@@ -7,7 +7,7 @@ template<typename T>
 class queue
 {
 public:
-	queue() : _first(0), _last(_first), _size(0) {}
+	queue() : _first(NULL), _last(_first), _size(0) {}
 	queue(const queue<T> &other);
 	~queue();
 	T& front();
@@ -58,7 +58,7 @@ queue<T>::queue(const queue<T> &other) {
 		list<T> *L = new list<T>;
         	L->_x = other._first->_x;
         	_first = _last = L;
-        	L = 0;
+        	L = NULL;
 		++_size;
         	delete L;
 		if (other._size > 1) {
@@ -68,7 +68,7 @@ queue<T>::queue(const queue<T> &other) {
                			Q->_x = FIRST->_x;
                			_last->_next = Q;
                 		_last = Q;
-               			Q = 0;
+               			Q = NULL;
                 		delete Q;
 				++_size;
 				FIRST = FIRST->_next;
@@ -131,7 +131,7 @@ void queue<T>::push(const T& element)
 		Q->_x = element;
 		_last->_next = Q;
 		_last = Q;
-		Q = 0;
+		Q = NULL;
 		delete Q;
 	}
 	else
@@ -139,7 +139,7 @@ void queue<T>::push(const T& element)
 		list<T> *L = new list<T>;
 		L->_x = element;
 		_first = _last = L;
-		L = 0;
+		L = NULL;
 		delete L;
 	}
 	++_size;
