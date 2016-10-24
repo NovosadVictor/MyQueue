@@ -3,7 +3,7 @@
 #include <iostream>
 #include "MyList.h"
 
-template<typename T>
+template<class T>
 class queue
 {
 public:
@@ -18,14 +18,13 @@ public:
 	void push(const T& element);
 	void pop();
 	friend queue<T> operator+(const queue<T> &lhs, const queue<T> &rhs) {
-		
-        	queue<T> Q = lhs;
+        	queue<T> Q;
+		Q = lhs;
 		list<T> *RFirst = rhs._first;
-		while(RFirst != rhs._last)  {
+		while(RFirst != NULL)  {
                         Q.push(RFirst->_x);
                         RFirst = RFirst->_next;
                 }
-		Q.push(rhs._last->_x);
         	return Q;
 	}
 	bool operator==(const queue<T>& other);
@@ -52,49 +51,60 @@ private:
 	size_t _size;
 };
 
-template<typename T>
+template<class T>
 queue<T>::queue(const queue<T> &other) {
-  	if (other._size > 0) {
+  	if (other._size == 1) {
 		list<T> *L = new list<T>;
         	L->_x = other._first->_x;
         	_first = _last = L;
         	L = NULL;
-		++_size;
         	delete L;
-		if (other._size > 1) {
-			list<T> *FIRST = other._first->_next;
-			while (FIRST != 0) {
-                		list<T> *Q = new list<T>;
-               			Q->_x = FIRST->_x;
-               			_last->_next = Q;
-                		_last = Q;
-               			Q = NULL;
-                		delete Q;
-				++_size;
-				FIRST = FIRST->_next;
-			}
+		++_size;
+	}
+	if (other._size > 1) {
+		std::cout << "true1" << std::endl;
+		list<T> *FIRST = other._first;
+		std::cout << "true2" << std::endl;
+		while (FIRST != NULL) {
+			(*this).push(FIRST->_x);
+			FIRST = FIRST->_next;
 		}
 	}
-}
-/*list<T> *FIRST = other._first;
-        while (FIRST != 0){
-                (*this).push(FIRST->_x);
-                FIRST = FIRST->_next;
-        }*/
+	/*		std::cout << "true3" << std::endl;
+             		list<T> *Q = new list<T>;
+              		Q->_x = FIRST->_x;
+			std::cout << Q->_x << std::endl;
+			std::cout << "0";
+               		_last->_next = Q;
+			std::cout << "1";
+                	_last = Q;
+			std::cout << "2";
+			std::cout <<  "etetw";
+			std::cout << other._first->_next->_x << std::endl;
+			FIRST = FIRST->_next;
+               		Q = NULL;
+               		delete Q;
+//			std::cout << "true4" << std::endl;
+			++_size;
+			}
+		}
+	*/
 
-template<typename T>
+}
+
+template<class T>
 queue<T>::~queue() {
 	for(list<T> *cur = _first; cur != NULL; cur = cur->_next)
 		delete cur;
 }
-template<typename T>
+template<class T>
 T& queue<T>::front()
 {
 	if (_size != 0)
 		return _first->_x;
-	throw std::bad_alloc();
+	throw 2;
 }
-template<typename T>
+template<class T>
 void queue<T>::clear() {
 	if (_size > 0){
 		for(list<T> *cur = _first; cur != NULL; cur = cur->_next)
@@ -104,24 +114,24 @@ void queue<T>::clear() {
 	_last = _first;
 	}
 }
-template<typename T>
+template<class T>
 T& queue<T>::back()
 {
 	if (_size != 0)
 		return _last->_x;
-	throw std::bad_alloc();
+	throw 2;
 }
-template<typename T>
+template<class T>
 bool queue<T>::empty()
 {
 	return _size == 0;
 }
-template<typename T>
+template<class T>
 size_t queue<T>::size()
 {
 	return _size;
 }
-template<typename T>
+template<class T>
 void queue<T>::push(const T& element)
 {
 	
@@ -144,7 +154,7 @@ void queue<T>::push(const T& element)
 	}
 	++_size;
 }
-template<typename T>
+template<class T>
 void queue<T>::pop()
 {
 	if (_size == 1)
@@ -159,11 +169,11 @@ void queue<T>::pop()
 		_first = _first->_next;
 	}
 	if (_size <= 0)
-		throw std::bad_alloc();
+		throw 1;
 	else
 		--_size;
 }
-template<typename T>
+template<class T>
 bool queue<T>::operator==(const queue<T> &other)
 {
 	if (_size != other._size)
@@ -181,12 +191,12 @@ bool queue<T>::operator==(const queue<T> &other)
 		return false;
 	return true;
 }
-template<typename T>
+template<class T>
 bool queue<T>::operator!=(const queue<T> &other)
 {
 	return !((*this) == other);
 }
-template<typename T>
+template<class T>
 queue<T>& queue<T>::operator=(const queue<T>& other) {
 	list<T> *FIRST = other._first;
 	(*this).clear();
@@ -196,7 +206,7 @@ queue<T>& queue<T>::operator=(const queue<T>& other) {
 	}
 	return *this;
 }
-template<typename T>
+template<class T>
 void queue<T>::QueueSort() {
 	list<T> *FIRST = _first;
 	while (_first != 0) {
@@ -217,48 +227,6 @@ void queue<T>::QueueSort() {
 	}
 	_first = FIRST;
 }
-	/*for(list<T> *cur1 = _first; cur1 != 0; cur1 = cur1->_next) {
-		T min = cur1->_x;
-		list<T> *Qmin = cur1;	
-		for(list<T> *cur2 = _first; cur2 != 0; cur2 = cur2->_next) 
-			if (cur2->_x < min) {
-				min = cur2->_x;
-				Qmin = cur2;
-			}
-		T tmp = cur1->_x;
-		std::cout << tmp << std::endl;
-		cur1->_x = min;
-		std::cout << cur1->_x << std::endl;
-		Qmin->_x = tmp;
-		std::cout << Qmin->_x << std::endl;
-	}*/
-/*queue<T>& operator+(const queue<T> &lhs, const queue<T> &rhs)
-{
-	_first = lhs._first;
-	_last = lhs._last;
-	_last->_next = rhs._first;
-	_last = rhs._last;
-	_size = lhs._size + rhs._size;
-	return *this;
-}*/
-/*template<typename T>
-std::ostream& operator<<(std::ostream& os, const queue<T>& _queue)
-{
-	list<T> *FIRST = _queue._first;
-	list<T> *_FIRST = FIRST;
-	while (FIRST != _queue._last)
-	{
-		os << FIRST->_x << std::endl;
-		FIRST = _queue._first->_next;
-		_queue._first = FIRST;
-	}
-	os << _queue._last->_x << std::endl;
-	_queue._first = _FIRST;
-	return os;
-}*/
-
-
-
 
 
 #endif

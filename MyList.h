@@ -1,7 +1,7 @@
 #ifndef _MYLIST_H_
 #define _MYLIST_H_
 
-template<typename T>
+template<class T>
 struct list
 {
 	T _x;
