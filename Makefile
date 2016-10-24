@@ -8,7 +8,7 @@ all: prog
 prog: MyQueue.o main.o MyList.o
 	g++ MyQueue.o main.o MyList.o -o prog
 
-MyString.o: MyQueue.h
+MyQueue.o: MyQueue.h
 	g++ -c MyQueue.h
 
 main.o: main.cpp MyQueue.h MyList.h
