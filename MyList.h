@@ -1,6 +1,6 @@
 #ifndef _MYLIST_H_
 #define _MYLIST_H_
-
+#include <iosfwd>
 template<class T>
 struct list
 {
